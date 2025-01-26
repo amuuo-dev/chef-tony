@@ -2,4 +2,8 @@
 body {
   margin: 0;
   font-family: "Inter", serif;
+  background-color: #fafaf8;
+}
+button {
+  font-family: "Inter", serif;
 }

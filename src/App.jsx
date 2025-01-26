@@ -1,7 +1,10 @@
+import Header from "./components/Header";
+import Main from "./components/Main";
 function App() {
   return (
     <>
-      <h1 className="text-4xl">React vs Vite</h1>
+      <Header />
+      <Main />
     </>
   );
 }
