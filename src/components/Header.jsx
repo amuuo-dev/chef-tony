@@ -1,5 +1,6 @@
-import chefImg from "../../public/chef-claude-icon.png";
+// import chefImg from "../../public/chef-claude-icon.png";
 const Header = () => {
+  const chefImg = "/chef-claude-icon.png";
   return (
     <header className="flex justify-center items-center shadow-sm bg-white gap-[11px] h-[80px]">
       <img src={chefImg} alt="chef logo" className="w-[50px]" />
