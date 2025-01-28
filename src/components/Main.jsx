@@ -1,23 +1,34 @@
+import { useState } from "react";
+import TonyRecipe from "./TonyRecipe";
+import IngredientsList from "./IngredientsList";
+import { getRecipeFromMistral } from "../../ai";
+
 const Main = () => {
-  const ingredients = ["Chicken", "Oregano", "Tomatoes"];
+  const [ingredients, setIngredients] = useState([]);
+  const [recipe, setRecipe] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const ingredientsListItems = ingredients.map((ingred, index) => (
-    <li key={index}>{ingred}</li>
-  ));
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    console.log("form submitted");
-    const formData = new FormData(event.currentTarget);
-    const newIngredient = formData.get("ingredient");
-    ingredients.push(newIngredient);
-    console.log(ingredients);
+  async function getRecipe() {
+    setLoading(true);
+    const recipeMarkdown = await getRecipeFromMistral(ingredients);
+    setRecipe(recipeMarkdown);
+    setLoading(false);
   }
+
+  function addIngredient(formData) {
+    const newIngredient = formData.get("ingredient").trim();
+    if (!newIngredient) {
+      alert("Ingredient cannot be empty!");
+      return;
+    }
+    setIngredients((prevIngredients) => [...prevIngredients, newIngredient]);
+  }
+
   return (
     <main className="pt-[30px] px-[30px] pb-[10px]">
       <form
+        action={addIngredient}
         className="flex justify-center h-[38px] gap-[12px]"
-        onSubmit={handleSubmit}
       >
         <input
           className="rounded-md border border-gray-300 p-[9px] px-[13px] shadow-sm flex-grow min-w-[150px] max-w-[400px] outline-none"
@@ -30,7 +41,21 @@ const Main = () => {
           Add ingredient
         </button>
       </form>
-      <ul>{ingredientsListItems}</ul>
+      {ingredients.length < 4 && (
+        <p className="text-xs md:text-base mt-5 ml-0 md:ml-8">
+          Add atleast four ingredients inorder to generate{" "}
+          <span className="text-orange-600 font-semibold">Recipe</span>
+        </p>
+      )}
+      {ingredients.length > 0 && (
+        <IngredientsList
+          ingredients={ingredients}
+          getRecipe={getRecipe}
+          loading={loading}
+        />
+      )}
+      {/* recipe from Ai */}
+      {recipe ? <TonyRecipe recipe={recipe} /> : null}
     </main>
   );
 };
