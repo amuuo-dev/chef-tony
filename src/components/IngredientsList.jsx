@@ -16,7 +16,7 @@ const IngredientsList = (props) => {
       </ul>
       {props.ingredients.length > 3 && (
         <div className="md:flex justify-between items-center rounded-lg bg-[#F0EFEB] px-[28px] py-[18px] w-full">
-          <div>
+          <div ref={props.ref}>
             <h3 className="text-[1.125rem] font-medium leading-[24px]">
               Ready for a recipe?
             </h3>

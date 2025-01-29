@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import TonyRecipe from "./TonyRecipe";
 import IngredientsList from "./IngredientsList";
 import { getRecipeFromMistral } from "../../ai";
@@ -7,6 +7,13 @@ const Main = () => {
   const [ingredients, setIngredients] = useState([]);
   const [recipe, setRecipe] = useState("");
   const [loading, setLoading] = useState(false);
+  const recipeSection = useRef(null);
+
+  useEffect(() => {
+    if (recipe !== "" && recipeSection !== null) {
+      recipeSection.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [recipe]);
 
   async function getRecipe() {
     setLoading(true);
@@ -49,6 +56,7 @@ const Main = () => {
       )}
       {ingredients.length > 0 && (
         <IngredientsList
+          ref={recipeSection}
           ingredients={ingredients}
           getRecipe={getRecipe}
           loading={loading}
